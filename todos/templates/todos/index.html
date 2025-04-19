@@ -1,0 +1,17 @@
+<h1>Todo一覧</h1>
+
+{% if todos %}
+    <ul>
+    {% for todo in todos %}
+        <li>
+            <a href="{% url 'todos:index' %}">{{ todo.title }}</a>
+            <a href="{% url 'todos:update' todo.id %}">編集</a>
+            <a href="{% url 'todos:delete' todo.id %}">削除</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>登録しているTodoがありません。</p>
+{% endif %}
+
+<a href="{% url 'todos:create' %}">新規作成</a>

@@ -1,0 +1,26 @@
+# 仮想環境
+venv/
+.env
+
+# Pythonキャッシュ
+__pycache__/
+*.py[cod]
+
+# SQLiteや一時データベース
+db.sqlite3
+
+# VSCodeやIDEの設定ファイル
+.vscode/
+.idea/
+
+# マイグレーション履歴
+**/migrations/*.pyc
+**/migrations/__pycache__/
+
+# 静的ファイル・メディア
+staticfiles/
+media/
+
+# OS固有
+.DS_Store
+Thumbs.db

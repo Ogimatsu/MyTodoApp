@@ -1,0 +1,9 @@
+<h1>Todoの編集</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">更新</button>
+</form>
+
+<a href="{% url 'todos:index' %}">キャンセル</a>

@@ -1,0 +1,9 @@
+<h1>Todoの新規作成</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">作成</button>
+</form>
+
+<a href="{% url 'todos:index' %}">キャンセル</a>
