@@ -1,17 +1,38 @@
 <h1>Todo一覧</h1>
 
 {% if todos %}
-    <ul>
+  <div class="todo-list">
     {% for todo in todos %}
-        <li>
-            <a href="{% url 'todos:index' %}">{{ todo.title }}</a>
-            <a href="{% url 'todos:update' todo.id %}">編集</a>
-            <a href="{% url 'todos:delete' todo.id %}">削除</a>
-        </li>
+      <div class="card">
+        <h5>{{ todo.title }}</h5>
+        <p>緊急度：{{ todo.get_urgency_display }}</p>
+        <p>重要度：{{ todo.get_importance_display }}</p>
+        <p>進捗：{{ todo.progress_percent|default_if_none:'-' }}％（{{ todo.actual_value|default_if_none:'-' }} / {{ todo.target_value|default_if_none:'-' }}{{ todo.unit_display }}）</p>
+        <p>更新日時：{{ todo.updated_at|date:"Y/m/d H:i" }}</p>
+        <p>締切日時：{{ todo.due_date|date:"Y/m/d H:i" }}</p>
+        <p>完了日時：{{ todo.completed_at|date:"Y/m/d H:i" }}</p>
+        <div class="action-buttons">
+          {% if todo.completed %}
+            <form action="{% url 'todos:uncomplete' todo.id %}" method="post" style="display:inline;">
+              {% csrf_token %}
+              <p>タスク状態：完了</p>
+              <button type="submit">タスク完了を取り消す</button>
+            </form>
+          {% else %}
+            <form action="{% url 'todos:complete' todo.id %}" method="post" style="display:inline;">
+              {% csrf_token %}
+              <p>タスク状態：着手中</p>
+              <button type="submit">タスクを完了にする</button>
+            </form>
+          {% endif %}
+          <a href="{% url 'todos:update' todo.id %}">編集</a>
+          <a href="{% url 'todos:delete' todo.id %}">削除</a>
+        </div>
+      </div>
     {% endfor %}
-    </ul>
+  </div>
 {% else %}
-    <p>登録しているTodoがありません。</p>
+  <p>登録しているTodoがありません。</p>
 {% endif %}
 
 <a href="{% url 'todos:create' %}">新規作成</a>
