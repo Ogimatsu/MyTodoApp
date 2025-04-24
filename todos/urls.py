@@ -7,4 +7,6 @@ urlpatterns = [
     path('create/', views.create, name='create'), # 新規作成ページ
     path('update/<int:pk>/', views.update, name='update'), # 更新ページ
     path('delete/<int:pk>/', views.delete, name='delete'), # 削除ページ
+    path('<int:pk>/complete/', views.change_complete_true, name='complete'), # タスク完了にする
+    path('<int:pk>/uncomplete/', views.change_complete_false, name='uncomplete') # タスク完了取消にする
 ]
