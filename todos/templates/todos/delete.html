@@ -1,9 +1,0 @@
-<h2>本当にこのTodoを削除しますか？</h2>
-
-<p><strong>{{ todo.title }}</strong></p>
-
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">削除</button>
-    <a href="{% url 'todos:index' %}">キャンセル</a>
-</form>

@@ -9,7 +9,7 @@ def main():
         raise ImportError(
             "Djangoをインポートできませんでした。"
             "Djangoがインストールされ、PythonPath環境変数で使用可能になっていることを確認してください。"
-            "仮想環境を有効化し忘れていませんか？?"
+            "仮想環境を有効化し忘れていませんか？"
         ) from exc
     execute_from_command_line(sys.argv)
 

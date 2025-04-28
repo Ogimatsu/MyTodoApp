@@ -1,9 +1,47 @@
-<h1>Todoの新規作成</h1>
+{% extends 'base.html' %}
+{% block title %}タスクの新規作成{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">タスクの新規作成</h1>
 
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">作成</button>
-</form>
+    <div class="mb-3">
+        <label for="id_title" class="form-label">タスク名</label>
+        {{ form.title }}
+    </div>
+    <div class="mb-3">
+        <label for="id_urgency" class="form-label">緊急度</label>
+        {{ form.urgency }}
+    </div>
+    <div class="mb-3">
+        <label for="id_importance" class="form-label">重要度</label>
+        {{ form.importance }}
+    </div>
+    <div class="mb-3">
+        <label for="id_target_value" class="form-label">目標値</label>
+        {{ form.target_value }}
+    </div>
+    <div class="mb-3">
+        <label for="id_target_unit" class="form-label">目標単位</label>
+        {{ form.target_unit }}
+    </div>
+    <div class="mb-3">
+        <label for="id_actual_value" class="form-label">実績値</label>
+        {{ form.actual_value }}
+    </div>
+    <div class="mb-3">
+        <label for="id_due_date" class="form-label">締切日時</label>
+        {{ form.due_date }}
+    </div>
+    <div class="mb-3">
+        <label for="id_status" class="form-label">タスク完了</label>
+        {{ form.status }}
+    </div>
 
-<a href="{% url 'todos:index' %}">キャンセル</a>
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-plus-lg"></i> 作成</button>
+        <a href="{% url 'todos:index' %}" class="btn btn-secondary"><i class="bi bi-x-lg"></i> キャンセル</a>
+    </div>
+</form>
+{% endblock %}
