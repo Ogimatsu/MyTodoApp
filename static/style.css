@@ -1,0 +1,9 @@
+/* 詳細情報の日付の幅の最小値 */
+.detail-info-min-width {
+    min-width: 200px;
+  }
+
+/* タスクの情報ごとの区切りの線の太さと色 */
+.index-border-bottom {
+  border-bottom: 2px solid #666;
+}

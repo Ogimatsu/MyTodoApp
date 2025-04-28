@@ -16,13 +16,17 @@ class Todo(models.Model):
     target_value = models.IntegerField(default=0, null=True, blank=True) #目標値
     target_unit = models.CharField(max_length=20, null=True, blank=True) #目標単位
     actual_value = models.IntegerField(default=0, null=True, blank=True) #実績値
-    completed = models.BooleanField(default=False) #完了フラグ
+    STATUS_CHOICES = [
+        (0,'着手中'),
+        (1,'完了')
+    ]
+    status = models.IntegerField(choices=STATUS_CHOICES,default=0) #ステータス
     created_at = models.DateTimeField(auto_now_add=True) #作成日時
     updated_at = models.DateTimeField(auto_now=True) #更新日時
     due_date = models.DateTimeField(default=None, null=True, blank=True) #締切日時
     completed_at = models.DateTimeField(default=None, null=True, blank=True) #完了日時
 
-    # Todoのタスク名を表示
+    # タスク名を表示
     def __str__(self):
         return self.title
 

@@ -5,14 +5,13 @@ from .models import Todo
 class TodoForm(forms.ModelForm):
     class Meta:
         model = Todo
-        fields = ['title','urgency','importance','target_value','target_unit','actual_value','due_date','completed']
-        labels = {
-            'title':'タスク名',
-            'urgency':'緊急度',
-            'importance':'重要度',
-            'target_value':'目標値',
-            'target_unit':'目標単位',
-            'actual_value':'実績値',
-            'due_date':'締切日時',
-            'completed':'タスク完了'
-        }
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            # フィールドの種類によってクラスをつける（テキストかセレクトかで）
+            if isinstance(field.widget, forms.widgets.TextInput) or isinstance(field.widget, forms.widgets.Textarea):
+                field.widget.attrs['class'] = 'form-control'
+            elif isinstance(field.widget, forms.widgets.Select):
+                field.widget.attrs['class'] = 'form-select'
