@@ -43,6 +43,20 @@ class Todo(models.Model):
                 return 0
         return None
 
+    # 進捗バーの色を取得する処理
+    @property
+    def get_progressbar_color(self):
+        if self.progress_percent is None:
+            return 'bg-secondary'
+        elif self.progress_percent >= 100:
+            return 'bg-success'
+        elif self.progress_percent >= 70:
+            return 'bg-info'
+        elif self.progress_percent >= 30:
+            return 'bg-warning'
+        else:
+            return 'bg-danger'
+
     # 目標単位が空白の場合は記載しないようにする
     @property
     def unit_display(self):

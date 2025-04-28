@@ -59,6 +59,14 @@ def change_complete(request,pk,status):
 
 # タスク完了のチェックをオンにした場合
 def change_complete_true(request, pk):
+    todo = get_object_or_404(Todo, pk=pk)
+    if request.method == 'POST':
+        # 目標値がNoneまたは0の場合実績値の補正を行わない
+        if todo.target_value is not None and todo.target_value != 0:
+            # 実績値がNoneまたは実績値＜目標値の場合、実績値＝目標値（進捗率100%）となるように実績値の補正を行う
+            if todo.actual_value is None or todo.actual_value < todo.target_value:
+                todo.actual_value = todo.target_value
+        todo.save()
     return change_complete(request, pk, 1)
 
 # タスク完了のチェックをオフにした場合
