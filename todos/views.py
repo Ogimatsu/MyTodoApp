@@ -1,9 +1,9 @@
 from datetime import datetime, time
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-from django.urls import reverse
 from todos.models import Todo
 from todos.forms import TodoForm, TodoSearchForm
+from utils.message_helper import add_message, ICON_MAP
 
 # 各種日付の範囲検索
 def get_search_date(queryset,field,date_start,date_end):
@@ -53,11 +53,35 @@ def index(request):
             # 完了日時を入力している場合、範囲検索を行う
             todos = get_search_date(todos,'completed_at',cd['completed_from'],cd['completed_to'])
 
-    # 更新日時の降順に並び替え
-    todos = todos.order_by('-updated_at')
+    # 作成日時の降順に並び替え
+    todos = todos.order_by('-created_at')
     # 検索結果の件数を取得
     count = todos.count()
-    return render(request, 'todos/index.html', {'todos': todos, 'count': count, 'form': form})
+    if action == 'search' and count == 0:
+        add_message(request, 'MSG_3101')
+
+    return render(request, 'todos/index.html', {
+        'todos': todos,
+        'count': count,
+        'form': form,
+        'icon_map': ICON_MAP
+    })
+
+def get_progress(request, actual_value, target_value):
+    # 実績値がNoneの場合true
+    is_actual_invalid = actual_value is None
+    # 目標値がNoneまたは0の場合true
+    is_target_invalid = target_value is None or target_value == 0
+
+    if is_actual_invalid and is_target_invalid:
+        field = '目標値および実績値'
+    elif is_actual_invalid:
+        field = '実績値'
+    elif is_target_invalid:
+        field = '目標値'
+    else:
+        return
+    add_message(request, 'MSG_4101', field=field)
 
 def create(request):
     if request.method == 'POST':
@@ -69,6 +93,8 @@ def create(request):
             else:
                 todo.completed_at = None
             todo.save()
+            get_progress(request, todo.actual_value, todo.target_value)
+            add_message(request, 'MSG_1101', action='追加')
             return redirect('todos:index')
     else:
         form = TodoForm()
@@ -85,6 +111,8 @@ def update(request, pk):
             else:
                 todo.completed_at = None
             todo.save()
+            get_progress(request, todo.actual_value, todo.target_value)
+            add_message(request, 'MSG_1101', action='更新')
             return redirect('todos:index')
     else:
         form = TodoForm(instance=todo)
@@ -94,6 +122,7 @@ def delete(request, pk):
     todo = get_object_or_404(Todo, pk=pk)
     if request.method == 'POST':
         todo.delete()
+        add_message(request, 'MSG_1101', action='削除')
     return redirect('todos:index')
 
 # タスク完了かどうかが変更になった場合に行う処理
@@ -105,8 +134,7 @@ def change_complete(request,pk,status):
         # タスク完了の場合、完了日時を設定
         todo.completed_at = timezone.now() if status == 1 else None
         todo.save()
-    base_url = reverse('todos:index')
-    return redirect(f'{base_url}#todo-{pk}')
+    return redirect('todos:index')
 
 # タスク完了のチェックをオンにした場合
 def change_complete_true(request, pk):
@@ -118,8 +146,10 @@ def change_complete_true(request, pk):
             if todo.actual_value is None or todo.actual_value < todo.target_value:
                 todo.actual_value = todo.target_value
         todo.save()
+        add_message(request, 'MSG_1101', action='完了')
     return change_complete(request, pk, 1)
 
 # タスク完了のチェックをオフにした場合
 def change_complete_false(request, pk):
+    add_message(request, 'MSG_1102')
     return change_complete(request, pk, 0)

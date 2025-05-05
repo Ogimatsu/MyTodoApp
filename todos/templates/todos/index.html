@@ -53,7 +53,7 @@
       <div class="action-buttons align-self-center pb-2 mb-2">
         <div class="d-flex gap-2 align-items-center">
           <button type="submit" name="action" value="search" class="btn btn-info"><i class="bi bi-search"></i> 検索</button>
-          <button type="submit" name="action" value="clear" class="btn btn-secondary"><i class="bi bi-x-circle"></i> クリア</button>
+          <button type="submit" name="action" value="clear" class="btn btn-secondary" formnovalidate><i class="bi bi-x-circle"></i> クリア</button>
         </div>
       </div>
     </form>
@@ -75,7 +75,7 @@
               <!-- 完了・取消・編集・削除ボタン -->
               <div class="action-buttons align-self-center">
                 {% if todo.status == 1 %}
-                  <form action="{% url 'todos:uncomplete' todo.id %}#todo-{{ todo.id }}" method="post" style="display:inline;">
+                  <form action="{% url 'todos:uncomplete' todo.id %}" method="post" style="display:inline;">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-secondary"><i class="bi bi-arrow-return-left"></i> 取消</button>
                   </form>
@@ -140,7 +140,8 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  {{ todo.title }}
+                  <p class="text-danger small fw-bold mb-2" role="alert">※削除すると元に戻せません！</p>
+                  <h5>{{ todo.title }}</h5>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i> キャンセル</button>
@@ -157,6 +158,6 @@
 
     </div>
   {% else %}
-    <h3>登録しているタスクがありません。</h3>
+    {% if request.GET.action != "search" %}<h3>登録しているタスクがありません。</h3>{% endif %}
   {% endif %}
 {% endblock %}
