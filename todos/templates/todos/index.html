@@ -129,7 +129,7 @@
       {% endfor %}
 
       <!-- モーダル -->
-      {% block modal %}
+      {% block task_modal %}
         {% for todo in todos %}
           <!-- 削除ボタン押下時のモーダル表示 -->
           <div class="modal fade" id="deleteModal{{ todo.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ todo.id }}" aria-hidden="true">

@@ -19,6 +19,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'users.apps.UsersConfig',
     'todos.apps.TodoConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -26,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -115,3 +117,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DATETIME_FORMAT = 'Y/m/d H:i'
 DATE_FORMAT = 'Y/m/d'
 TIME_FORMAT = 'H:i:s'
+
+# ログイン後に遷移するページ
+LOGIN_REDIRECT_URL = '/todos/'
+# @login_required 時のリダイレクト先
+LOGIN_URL = '/login/'
+# ログアウト後の遷移先
+LOGOUT_REDIRECT_URL = '/login/'

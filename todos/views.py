@@ -4,6 +4,8 @@ from django.utils import timezone
 from todos.models import Todo
 from todos.forms import TodoForm, TodoSearchForm
 from utils.message_helper import add_message, ICON_MAP
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 
 # 各種日付の範囲検索
 def get_search_date(queryset,field,date_start,date_end):
@@ -23,10 +25,11 @@ def get_search_date(queryset,field,date_start,date_end):
         return queryset.filter(**{f"{field}__lte":(date_end)})
     return queryset
 
+@login_required
 def index(request):
     action = request.GET.get('action')
-    form = TodoSearchForm((request.GET or None) if action == 'search' else None)
-    todos = Todo.objects.all()
+    form = TodoSearchForm(request.GET if action == 'search' else None)
+    todos = Todo.objects.filter(user=request.user)
 
     # 検索ボタン押下時、検索を行う
     if action == 'search':
@@ -80,18 +83,17 @@ def get_progress(request, actual_value, target_value):
     elif is_target_invalid:
         field = '目標値'
     else:
-        return
+        return None
     add_message(request, 'MSG_4101', field=field)
 
+@login_required
 def create(request):
     if request.method == 'POST':
         form = TodoForm(request.POST)
         if form.is_valid():
             todo = form.save(commit=False)
-            if todo.status == 1:
-                todo.completed_at = timezone.now()
-            else:
-                todo.completed_at = None
+            todo.user = request.user
+            todo.completed_at = timezone.now() if todo.status == 1 else None
             todo.save()
             get_progress(request, todo.actual_value, todo.target_value)
             add_message(request, 'MSG_1101', action='追加')
@@ -100,16 +102,18 @@ def create(request):
         form = TodoForm()
     return render(request, 'todos/create.html', {'form': form})
 
+@login_required
 def update(request, pk):
     todo = get_object_or_404(Todo, pk=pk)
+    # 本人以外の場合アクセスできないようにする
+    if todo.user != request.user:
+        raise PermissionDenied
+
     if request.method == 'POST':
         form = TodoForm(request.POST, instance=todo)
         if form.is_valid():
             todo = form.save(commit=False)
-            if todo.status == 1:
-                todo.completed_at = timezone.now()
-            else:
-                todo.completed_at = None
+            todo.completed_at = timezone.now() if todo.status == 1 else None
             todo.save()
             get_progress(request, todo.actual_value, todo.target_value)
             add_message(request, 'MSG_1101', action='更新')
@@ -118,8 +122,13 @@ def update(request, pk):
         form = TodoForm(instance=todo)
     return render(request, 'todos/update.html', {'form': form})
 
+@login_required
 def delete(request, pk):
     todo = get_object_or_404(Todo, pk=pk)
+    # 本人以外の場合アクセスできないようにする
+    if todo.user != request.user:
+        raise PermissionDenied
+
     if request.method == 'POST':
         todo.delete()
         add_message(request, 'MSG_1101', action='削除')
@@ -137,8 +146,12 @@ def change_complete(request,pk,status):
     return redirect('todos:index')
 
 # タスク完了のチェックをオンにした場合
+@login_required
 def change_complete_true(request, pk):
     todo = get_object_or_404(Todo, pk=pk)
+    # 本人以外の場合アクセスできないようにする
+    if todo.user != request.user:
+        raise PermissionDenied
     if request.method == 'POST':
         # 目標値がNoneまたは0の場合実績値の補正を行わない
         if todo.target_value is not None and todo.target_value != 0:
@@ -150,6 +163,11 @@ def change_complete_true(request, pk):
     return change_complete(request, pk, 1)
 
 # タスク完了のチェックをオフにした場合
+@login_required
 def change_complete_false(request, pk):
+    todo = get_object_or_404(Todo, pk=pk)
+    # 本人以外の場合アクセスできないようにする
+    if todo.user != request.user:
+        raise PermissionDenied
     add_message(request, 'MSG_1102')
     return change_complete(request, pk, 0)
