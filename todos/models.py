@@ -1,7 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 #Todoテーブル
 class Todo(models.Model):
+    # ユーザーにタスクを紐づける。（ユーザー削除時は紐づいたタスクも同時に消去。）
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
     title = models.CharField(max_length=200) #タスク名
     URGENCY_CHOICES = [
         (0,'低'),

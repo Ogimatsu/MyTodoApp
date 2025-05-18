@@ -11,7 +11,6 @@ def validate_value_check(field_label):
             raise forms.ValidationError(MESSAGES["MSG_2104"]["text"].format(field=field_label))
     return _validate
 
-
 # 日付入力の妥当性チェック
 def validate_date_range(date_label):
     def _validate(value):
@@ -44,7 +43,7 @@ def validate_date_pairs(form_instance, cleaned_data, date_pairs):
 class TodoForm(forms.ModelForm):
     class Meta:
         model = Todo
-        fields = '__all__'
+        exclude = ['user']
         widgets = {
             # 締切日時は日付の入力欄にする
             'due_date': forms.DateInput(attrs={
