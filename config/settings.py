@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -124,3 +125,16 @@ LOGIN_REDIRECT_URL = '/todos/'
 LOGIN_URL = '/login/'
 # ログアウト後の遷移先
 LOGOUT_REDIRECT_URL = '/login/'
+
+# パスワード再発行用
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # 本番用
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # 開発用
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@example.com')
+
+# カスタムユーザーモデルの指定
+AUTH_USER_MODEL = 'users.CustomUser'
