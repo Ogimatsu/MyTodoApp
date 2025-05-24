@@ -1,10 +1,11 @@
-from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
-from django.views.generic.edit import CreateView, DeleteView
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView, PasswordChangeView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import TemplateView
 from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.urls import reverse, reverse_lazy
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, MypageUpdateForm
 
 # ログイン時の処理
 class CustomLoginView(LoginView):
@@ -32,9 +33,32 @@ class AccountDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('login')
 
     def get_object(self):
-         return self.request.user
+        return self.request.user
 
     def delete(self, request, *args, **kwargs):
-         logout(request)
-         return super().delete(request, *args, **kwargs)
+        logout(request)
+        return super().delete(request, *args, **kwargs)
 
+# マイページの処理
+class Mypage(LoginRequiredMixin, TemplateView):
+    template_name = 'registration/mypage.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = MypageUpdateForm(instance=self.request.user) # type: ignore
+        return context
+
+# マイページ編集の処理
+class MypageUpdate(LoginRequiredMixin, UpdateView):
+    model = User
+    template_name = 'registration/mypage_update.html'
+    form_class = MypageUpdateForm
+    success_url = reverse_lazy('mypage')
+
+    def get_object(self):
+        return self.request.user
+
+# パスワード変更の処理
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name = 'registration/password_change.html'
+    success_url = reverse_lazy('mypage')

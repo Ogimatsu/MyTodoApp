@@ -1,5 +1,15 @@
 {% load widget_tweaks %}
 <div class="mb-3">
   <label for="id_{{ field.name }}" class="form-label">{{ label }}</label>
-  {{ field|add_class:"form-control" }}
+  <!-- readonlyがTrueのときフォームを編集不可にする -->
+  {% if readonly %}
+    {{ field|add_class:"form-control"|attr:"disabled:true" }}
+  {% else %}
+    {{ field|add_class:"form-control" }}
+  {% endif %}
+
+  <!-- パスワード等の入力の注意書きの記載 -->
+  {% if field.help_text %}
+    <div class="form-text text-muted">{{ field.help_text|safe }}</div>
+  {% endif %}
 </div>
