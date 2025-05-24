@@ -1,10 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 #Todoテーブル
 class Todo(models.Model):
     # ユーザーにタスクを紐づける。（ユーザー削除時は紐づいたタスクも同時に消去。）
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     title = models.CharField(max_length=200) #タスク名
     URGENCY_CHOICES = [
