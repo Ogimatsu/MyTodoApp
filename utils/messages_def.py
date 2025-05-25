@@ -9,6 +9,31 @@ MESSAGES = {
         "text": "タスクの完了を取り消しました。",
         "level": "success"
     },
+    # ユーザー系：1200番台
+    "MSG_1201": {
+        "text": "アカウントの登録が完了しました。",
+        "level": "success"
+    },
+    "MSG_1202": {
+        "text": "ログインしました。",
+        "level": "success"
+    },
+    "MSG_1203": {
+        "text": "ログアウトしました。",
+        "level": "success"
+    },
+    "MSG_1204": {
+        "text": "マイページを編集しました。",
+        "level": "success"
+    },
+    "MSG_1205": {
+        "text": "パスワードを変更しました。",
+        "level": "success"
+    },
+    "MSG_1206": {
+        "text": "アカウントを削除しました。",
+        "level": "success"
+    },
 
     # エラー系：200番台
     # タスク系：2100番台
@@ -26,15 +51,6 @@ MESSAGES = {
     },
     "MSG_2104": {
         "text": "{field}は0以上の値を入力してください。",
-        "level": "danger"
-    },
-    # ユーザー系：2200番台
-    "MSG_2201": {
-        "text": "このメールアドレスは既に登録されています。",
-        "level": "danger"
-    },
-    "MSG_2202": {
-        "text": "パスワードが違います。",
         "level": "danger"
     },
 
