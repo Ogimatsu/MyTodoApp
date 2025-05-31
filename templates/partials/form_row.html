@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
 <div class="mb-3">
-  <label for="id_{{ field.name }}" class="form-label">{{ label }}</label>
+  <label for="id_{{ field.name }}" class="form-label">{{ label }} {% if required %}<span class="text-danger">*</span>{% endif %}</label>
   <!-- readonlyがTrueのときフォームを編集不可にする -->
   {% if readonly %}
     {{ field|add_class:"form-control"|attr:"disabled:true" }}

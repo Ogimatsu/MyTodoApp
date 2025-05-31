@@ -11,12 +11,12 @@
     {% include "partials/form_row.html" with field=form.email label="メールアドレス" %}
     {% include "partials/form_row.html" with field=form.password1 label="パスワード" %}
     {% include "partials/form_row.html" with field=form.password2 label="パスワード（確認用）" %}
-    <div class="d-flex gap-2">
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i> 登録</button>
+    <div class="d-flex gap-2 align-items-center">
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i>登録</button>
     </div>
-    <div class="d-flex gap-2">
+    <div class="d-flex align-items-center pt-2">
         <div>アカウントをお持ちの場合：</div>
-        <a href="{% url 'login' %}" class="btn btn-link"> ログイン</a>
+        <a href="{% url 'login' %}" class="btn btn-link ps-0">ログイン</a>
     </div>
 </form>
 {% endblock %}
