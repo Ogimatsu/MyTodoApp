@@ -6,26 +6,22 @@
 
 <form method="post">
     {% csrf_token %}
-    <div class="mb-3">
-        <label for="id_title" class="form-label">タスク名</label>
-        {{ form.title }}
-    </div>
-    <div class="mb-3">
-        <label for="id_urgency" class="form-label">緊急度</label>
-        {{ form.urgency }}
-    </div>
-    <div class="mb-3">
-        <label for="id_importance" class="form-label">重要度</label>
-        {{ form.importance }}
+    {% include "partials/form_row.html" with field=form.title label="タスク名" required=True %}
+    <div class="d-flex flex-wrap mb-3">
+        <div class="me-3">
+            <label for="id_urgency" class="form-label">緊急度</label>
+            {{ form.urgency }}
+        </div>
+        <div class="me-3">
+            <label for="id_importance" class="form-label">重要度</label>
+            {{ form.importance }}
+        </div>
     </div>
     <div class="mb-3">
         <label for="id_target_value" class="form-label">目標値</label>
         {{ form.target_value }}
     </div>
-    <div class="mb-3">
-        <label for="id_target_unit" class="form-label">目標単位</label>
-        {{ form.target_unit }}
-    </div>
+    {% include "partials/form_row.html" with field=form.target_unit label="目標単位" %}
     <div class="mb-3">
         <label for="id_actual_value" class="form-label">実績値</label>
         {{ form.actual_value }}
