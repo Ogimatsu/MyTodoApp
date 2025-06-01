@@ -1,8 +1,10 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from django.views.generic import RedirectView
 from .views import CustomLoginView, SignUpView, AccountDeleteView, Mypage, MypageUpdate, CustomPasswordChangeView, CustomLogoutView
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='/login/')),
     path('login/', CustomLoginView.as_view(), name='login'), # ログイン
     path('logout/', CustomLogoutView.as_view(), name='logout'), # ログアウト
     path('signup/', SignUpView.as_view(), name='signup'), # 新規登録
