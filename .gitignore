@@ -24,3 +24,6 @@ media/
 # OS固有
 .DS_Store
 Thumbs.db
+
+# ログファイル
+*.log
