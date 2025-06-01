@@ -4,7 +4,7 @@ from django.conf import settings
 #Todoテーブル
 class Todo(models.Model):
     # ユーザーにタスクを紐づける。（ユーザー削除時は紐づいたタスクも同時に消去。）
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     title = models.CharField(max_length=200) #タスク名
     URGENCY_CHOICES = [
