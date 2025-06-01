@@ -8,12 +8,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-2cdth@*-i8!h520wotx=-gq((=r!me9q38j4f5m26e%5i^=$8g' # 開発用
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY") # 本番用
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
+
+# SECURITY WARNING: keep the secret key used in production secret!
+if DEBUG:
+    SECRET_KEY = 'django-insecure-2cdth@*-i8!h520wotx=-gq((=r!me9q38j4f5m26e%5i^=$8g' # 開発用
+else:
+    SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') # 本番用
+
 
 ALLOWED_HOSTS = ['*']
 
@@ -128,14 +131,18 @@ LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 # パスワード再発行用
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # 開発用
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # 本番用
-EMAIL_HOST = os.environ.get('DJANGO_EMAIL_HOST')
-EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT', 587))
-EMAIL_HOST_USER = os.environ.get('DJANGO_EMAIL_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_EMAIL_PASSWORD')
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@example.com')
+if DEBUG:
+    # 開発用
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    # 本番用
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.environ.get('DJANGO_EMAIL_HOST')
+    EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT', 587))
+    EMAIL_HOST_USER = os.environ.get('DJANGO_EMAIL_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_EMAIL_PASSWORD')
+    EMAIL_USE_TLS = True
+    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@example.com')
 
 # カスタムユーザーモデルの指定
 AUTH_USER_MODEL = 'users.CustomUser'
