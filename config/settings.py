@@ -1,9 +1,12 @@
 import os
+from dotenv import load_dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# .env を読み込む
+load_dotenv(dotenv_path=BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -124,7 +127,7 @@ DATE_FORMAT = 'Y/m/d'
 TIME_FORMAT = 'H:i:s'
 
 # ログイン後に遷移するページ
-LOGIN_REDIRECT_URL = '/todos/'
+LOGIN_REDIRECT_URL = '/'
 # @login_required 時のリダイレクト先
 LOGIN_URL = '/login/'
 # ログアウト後の遷移先
