@@ -344,8 +344,8 @@ python manage.py runserver
 
 ## 今後の開発予定
 
-- AWS デプロイ（EC2, S3, CloudFront など利用予定）、環境変数管理、セキュリティ強化の対応
-- 本番メール設定（AWS SES など）と環境変数整備
+- 本番用メール送信機能の再整備（SendGrid または AWS SES）
+- CloudFront, S3, Route 53 など他 AWS サービスの導入による構成強化（任意）
 
 ---
 
@@ -356,3 +356,8 @@ python manage.py runserver
 - パスワード再発行機能の完成（メール送信・再設定リンク）
 - メッセージアラートの強化
 - 画面レイアウトの統一、UI 整理
+- Gunicorn + systemd + nginx による本番環境構築
+- AWS EC2 へのデプロイ完了（Elastic IP による固定 IP 化）
+- `.env.production`による環境変数管理の導入
+- HTTPS 対応（Let's Encrypt または自己署名 → 後に正式化）
+- ドメイン取得と HTTPS 対応による URL の正式化（必要に応じて）
