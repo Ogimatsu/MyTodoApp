@@ -21,7 +21,15 @@ else:
     SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') # 本番用
 
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'my-task-app.click',        # 独自ドメイン
+    'www.my-task-app.click',    # www付きの場合
+    '18.178.182.68',            # Elastic IP
+    'localhost',                # ローカル環境の確認用
+    '127.0.0.1',                # ローカルIP（ローカルテスト用）
+]
+
+CSRF_TRUSTED_ORIGINS = ['https://my-task-app.click', 'https://www.my-task-app.click']
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
@@ -185,3 +193,11 @@ LOGGING = {
         },
     },
 }
+
+# httpsにする設定
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = False
