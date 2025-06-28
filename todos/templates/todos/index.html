@@ -64,10 +64,10 @@
         <div class="card mb-3 shadow-sm mb-1 {% if todo.status == 1 %} todo-completed {% endif %}" id="todo-{{ todo.id }}">
           <div class="card-body py-2">
             <!-- タスク名＋ボタン -->
-            <div class="d-flex justify-content-between align-items-start index-border-bottom pb-2 mb-1">
-              <h5 class="card-title align-self-center mt-2">{{ todo.title }}</h5>
+            <div class="d-flex flex-wrap justify-content-between align-items-start index-border-bottom pb-2 mb-1">
+              <h5 class="card-title mt-2 mb-2 me-2 text-truncate" style="max-width: 100%; min-width: 0;">{{ todo.title }}</h5>
               <!-- 完了・取消・編集・削除ボタン -->
-              <div class="action-buttons align-self-center">
+              <div class="action-buttons d-flex flex-wrap flex-shrink-0 gap-2 w-100 w-md-auto justify-content-md-end flex-md-nowrap">
                 {% if todo.status == 1 %}
                   <form action="{% url 'todos:uncomplete' todo.id %}" method="post" style="display:inline;">
                     {% csrf_token %}

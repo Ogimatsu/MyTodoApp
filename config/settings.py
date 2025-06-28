@@ -2,24 +2,22 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # .env を読み込む
-load_dotenv(dotenv_path=BASE_DIR / '.env')
+load_dotenv(BASE_DIR / ".env", override=True)
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
-
-# SECURITY WARNING: keep the secret key used in production secret!
 if DEBUG:
-    SECRET_KEY = 'django-insecure-2cdth@*-i8!h520wotx=-gq((=r!me9q38j4f5m26e%5i^=$8g' # 開発用
+    # 開発用
+    SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'unsafe-dev-key')
+    if SECRET_KEY == 'unsafe-dev-key':
+        import warnings
+        warnings.warn("<i class='bi bi-exclamation-triangle-fill'></i> 開発用SECRET_KEYが使用されています。")
 else:
-    SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') # 本番用
-
+    # 本番用
+    SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 ALLOWED_HOSTS = [
     'my-task-app.click',        # 独自ドメイン
@@ -195,9 +193,9 @@ LOGGING = {
 }
 
 # httpsにする設定
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_HSTS_SECONDS = 31536000
+SECURE_SSL_REDIRECT = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = False
