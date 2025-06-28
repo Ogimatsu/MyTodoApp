@@ -345,7 +345,6 @@ python manage.py runserver
 ## 今後の開発予定
 
 - 本番用メール送信機能の再整備（SendGrid または AWS SES）
-- CloudFront, S3, Route 53 など他 AWS サービスの導入による構成強化（任意）
 
 ---
 
@@ -360,4 +359,4 @@ python manage.py runserver
 - AWS EC2 へのデプロイ完了（Elastic IP による固定 IP 化）
 - `.env.production`による環境変数管理の導入
 - HTTPS 対応（Let's Encrypt または自己署名 → 後に正式化）
-- ドメイン取得と HTTPS 対応による URL の正式化（必要に応じて）
+- ドメイン取得と HTTPS 対応による URL の正式化
