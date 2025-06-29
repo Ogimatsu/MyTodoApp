@@ -21,7 +21,7 @@ class Todo(models.Model):
     target_unit = models.CharField(max_length=20, null=True, blank=True) #目標単位
     actual_value = models.IntegerField(default=0, null=True, blank=True) #実績値
     STATUS_CHOICES = [
-        (0,'着手中'),
+        (0,'進行中'),
         (1,'完了')
     ]
     status = models.IntegerField(choices=STATUS_CHOICES,default=0) #ステータス
