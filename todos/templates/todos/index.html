@@ -14,7 +14,7 @@
     <form id="searchForm" method="get">
       {% include "partials/form_row.html" with field=form.title label="タスク名" %}
       <div class="mb-3">
-        <label for="id_status" class="form-label">タスク状態</label>
+        <label for="id_status" class="form-label">ステータス</label>
         {{ form.status }}
       </div>
       <div class="d-flex flex-wrap mb-3">
@@ -58,13 +58,14 @@
     <h5 class="ms-2 mt-2 pb-1">件数： {{ count }} 件</h5>
   </div>
 
+  <!-- タスク一覧 -->
   {% if todos %}
     <div class="todo-list">
       {% for todo in todos %}
         <div class="card mb-3 shadow-sm mb-1 {% if todo.status == 1 %} todo-completed {% endif %}" id="todo-{{ todo.id }}">
           <div class="card-body py-2">
             <!-- タスク名＋ボタン -->
-            <div class="d-flex flex-wrap justify-content-between align-items-start index-border-bottom pb-2 mb-1">
+            <div class="d-flex flex-wrap justify-content-between align-items-start title-border-bottom pb-2 mb-1">
               <h5 class="card-title mt-2 mb-2 me-2 text-truncate" style="max-width: 100%; min-width: 0;">{{ todo.title }}</h5>
               <!-- 完了・取消・編集・削除ボタン -->
               <div class="action-buttons d-flex flex-wrap flex-shrink-0 gap-2 w-100 w-md-auto justify-content-md-end flex-md-nowrap">
@@ -85,11 +86,15 @@
             </div>
 
             <!-- 基本情報 -->
-            <div class="card-text border-bottom mb-1">
-              <div class="mb-1">タスク状態：{{ todo.get_status_display }}</div>
-              <div class="d-flex flex-wrap mt-1">
-                <div class="me-3 mb-1">緊急度：{{ todo.get_urgency_display }}</div>
-                <div class="me-3 mb-1">重要度：{{ todo.get_importance_display }}</div>
+            <div class="card-text mb-1 info-border-bottom">
+              <div class="d-flex flex-wrap align-text-center mb-1">
+                <div class="me-2">ステータス：{{ todo.get_status_display }}</div>
+                {% if todo.urgency == 1 %}
+                  <div class="me-2"><i class="bi bi-exclamation-octagon-fill text-danger" data-bs-toggle="tooltip" title="緊急度：高"></i></div>
+                {% endif %}
+                {% if todo.importance == 1 %}
+                  <div class="me-2"><i class="bi bi-star-fill text-warning" data-bs-toggle="tooltip" title="重要度：高"></i></div>
+                {% endif %}
               </div>
               <div class="d-flex flex-wrap">
                 <div class="mb-1">進捗率：{{ todo.progress_percent|default_if_none:'-' }}％（{{ todo.actual_value|default_if_none:'-' }} / {{ todo.target_value|default_if_none:'-' }}{{ todo.unit_display }}）</div>
@@ -100,7 +105,7 @@
             </div>
 
             <!-- 詳細情報 -->
-            <a class="text-decoration-none text-secondary small d-inline-block mt-2" data-bs-toggle="collapse" data-bs-target="#collapseDetail{{ todo.id }}" role="button" aria-expanded="false" aria-controls="collapseDetail{{ todo.id }}">
+            <a class="text-decoration-none text-secondary small d-inline-block mt-1" data-bs-toggle="collapse" data-bs-target="#collapseDetail{{ todo.id }}" role="button" aria-expanded="false" aria-controls="collapseDetail{{ todo.id }}">
               詳細情報 ▼
             </a>
             <div class="collapse" id="collapseDetail{{ todo.id }}">

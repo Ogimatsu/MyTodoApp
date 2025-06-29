@@ -116,7 +116,7 @@ class TodoSearchForm(forms.Form):
     # 重要度
     importance = get_choice_form([('', '-----'), (0, '低'), (1, '高')], '重要度')
     # タスク状態
-    status = get_choice_form([('', '-----'), (0, '未完了'), (1, '完了')], 'タスク状態')
+    status = get_choice_form([('', '-----'), (0, '進行中'), (1, '完了')], 'ステータス')
     # 更新日時
     updated_from = get_date_form('更新日時（開始）')
     updated_to = get_date_form('更新日時（終了）')

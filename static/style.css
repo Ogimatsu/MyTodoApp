@@ -5,7 +5,7 @@ main.container {
 
 /* 完了したものは背景をグレーにする */
 .todo-completed{
-  background-color: #e0e0e0;
+  background-color: #e0e0e0 !important;
 }
 
 /* 詳細情報の日付の幅の最小値 */
@@ -13,7 +13,12 @@ main.container {
     min-width: 200px;
   }
 
-/* タスクの情報ごとの区切りの線の太さと色 */
-.index-border-bottom {
-  border-bottom: 2px solid #666;
+/* タスク名・ボタンの下の区切りの線の太さと色 */
+.title-border-bottom {
+  border-bottom: 2px solid #666 !important;
+}
+
+/* 基本情報の下の区切りの線の太さと色 */
+.info-border-bottom {
+  border-bottom: 1px solid #6c757d !important;
 }
