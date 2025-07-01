@@ -1,12 +1,15 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordResetForm
 from utils.messages_def import MESSAGES
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV2Checkbox
 
 User = get_user_model()
 
 # ユーザー新規登録フォーム
 class CustomUserCreationForm(UserCreationForm):
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={"class": "form-control"}))
 
     class Meta:
@@ -34,3 +37,6 @@ class MypageUpdateForm(forms.ModelForm):
             "email": forms.EmailInput(attrs={"class": "form-control"}),
         }
 
+# パスワード再発行フォーム
+class PasswordResetCaptchaForm(PasswordResetForm):
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
